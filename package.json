@@ -1,0 +1,37 @@
+{
+  "name": "netflix-viewing-history",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "production": "webpack -p",
+    "start": "webpack-dev-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  },
+  "dependencies": {
+    "balanced-match": "^0.4.1",
+    "c3": "^0.4.10",
+    "chart.js": "^1.1.1",
+    "concat-map": "0.0.1",
+    "jquery": "^3.0.0",
+    "lodash": "^4.13.1",
+    "moment": "^2.14.1",
+    "react-c3js": "^0.1.7",
+    "react-chartjs": "^0.7.3",
+    "react-router": "^2.0.0-rc5",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.6.5",
+    "babel-loader": "^6.2.4",
+    "babel-preset-react": "^6.5.0",
+    "html-webpack-plugin": "^2.9.0",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
