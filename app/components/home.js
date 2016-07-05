@@ -2,20 +2,25 @@ var React = require('react');
 var LineChart = require('react-chartjs').Line;
 var $ = require('jquery');
 var _ = require('lodash');
+var moment = require('moment');
 
 var Home = React.createClass({
   getInitialState: function() {
     return {
       labels: ["January", "February", "March", "April", "May", "June", "July", "August",
                "September", "October", "November", "December"],
-      data: []
+      data: [0,0,0,0,0,0,0,0,0,0,0,0]
     };
   },
 
   componentDidMount: function () {
-    result_array = []
+    var result_array = this.state.data;
     this.serverRequest = $.get('http://localhost:4567/viewing_history', function (result) {
-      console.log(result);
+      _.forEach(result.viewing_history, function(object) {
+        var month = moment(object.date).get('month');
+        result_array[month] = result_array[month] + 1;
+      });
+      this.setState({data: result_array});
     }.bind(this));
   },
 
@@ -42,7 +47,7 @@ var Home = React.createClass({
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [65, 59, 80, 81, 56, 55, 40],
+                data: this.state.data,
             }
         ]
     };
