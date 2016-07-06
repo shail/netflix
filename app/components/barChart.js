@@ -1,12 +1,12 @@
 var $ = require('jquery');
 var _ = require('lodash');
 
-var PieChart = require('react-chartjs').Pie;
+var BarChart = require('react-chartjs').Bar;
 var React = require('react');
 
 var moment = require('moment');
 
-var ShowPieChart = React.createClass({
+var ShowBarChart = React.createClass({
   getInitialState: function() {
     return {
       data: [],
@@ -20,6 +20,7 @@ var ShowPieChart = React.createClass({
 
   componentDidMount: function () {
     const resultObject = _.zipObject(this.state.data, this.state.labels);
+    const resultArray = []
     this.serverRequest = $.get('http://localhost:4567/viewing_history', function (result) {
       _.forEach(result.viewing_history, function(object) {
         const name = object.name;
@@ -29,34 +30,44 @@ var ShowPieChart = React.createClass({
           resultObject[editedName] == undefined ? resultObject[editedName] = 1 : resultObject[editedName] = resultObject[editedName] + 1;
         };
       });
+
       const returnData = [];
       const returnLabels = [];
+
       _.forEach(resultObject, function(value, key) {
-        returnData.push(value);
-        returnLabels.push(key)
+        resultArray.push([value, key]);
       });
-      console.log(returnData);
-      console.log(returnLabels);
-      this.setState({data: [1,2,3,4,5], labels: ['a', 'b', 'c', 'd', 'e']});
+
+      const sortedArray = resultArray.sort(function(a, b) {
+        return a[0] - b[0]
+      });
+
+      _.forEach(sortedArray.reverse().slice(0,5), function(pair) {
+        returnData.push(pair[0]);
+        returnLabels.push(pair[1]);
+      });
+
+      this.setState({data: returnData, labels: returnLabels});
     }.bind(this));
   },
 
   render: function() {
-    const chartData = {
-        labels: ['a', 'b', 'c', 'd', 'e'],
+    const barData = {
+        labels: this.state.labels,
         datasets: [
-          {
-            label: "Top 5 TV Shows",
-            data: [1,2,3,4,5],
-            backgroundColor: this.props.colors,
-            hoverBackgroundColor: this.props.colors
-          }
+            {
+                fillColor : "#FFB6C1",
+                label: "Top 5 TV Shows",
+                data: this.state.data,
+            }
         ]
     };
     return (
-      <PieChart data={chartData} width="600" height="480" />
+      <div>
+      <BarChart data={barData} width="600" height="480" redraw />
+      </div>
     )
   }
 });
 
-module.exports = ShowPieChart;
+module.exports = ShowBarChart;
