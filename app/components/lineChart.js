@@ -7,7 +7,7 @@ var React = require('react');
 var moment = require('moment');
 
 var ViewingLineChart = React.createClass({
-  getInitialState: function() {
+  getDefaultProps: function() {
     return {
       labels: ["January", "February", "March", "April", "May", "June", "July", "August",
                "September", "October", "November", "December"],
@@ -15,27 +15,27 @@ var ViewingLineChart = React.createClass({
     };
   },
 
-  componentDidMount: function () {
-    const result_array = this.state.data;
-    this.serverRequest = $.get('http://localhost:4567/viewing_history', function (result) {
-      _.forEach(result.viewing_history, function(object) {
+  transform: function(data) {
+    if (data != undefined) {
+      const result_array = this.props.data;
+      _.forEach(data.viewing_history, function(object) {
         const month = moment(object.date).get('month');
         result_array[month] = result_array[month] + 1;
       });
-      this.setState({data: result_array});
-    }.bind(this));
+      return result_array
+    }
   },
 
   render: function() {
     const data = {
-        labels: this.state.labels,
+        labels: this.props.labels,
         datasets: [
           {
             fillColor : "rgba(172,194,132,0.4)",
             strokeColor : "#ACC26D",
             pointColor : "#fff",
             pointStrokeColor : "#9DB86D",
-            data: this.state.data,
+            data: this.transform(this.props.viewingHistory),
           }
         ]
     };

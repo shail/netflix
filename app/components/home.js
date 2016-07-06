@@ -8,11 +8,23 @@ var React = require('react');
 var moment = require('moment');
 
 var Home = React.createClass({
+  getInitialState: function() {
+    return {
+      viewingHistory: {}
+    };
+  },
+
+  componentDidMount: function() {
+    this.serverRequest = $.get('http://localhost:4567/viewing_history', function (result) {
+      this.setState({viewingHistory: result});
+    }.bind(this));
+  },
+
   render: function() {
     return (
       <div>
-      <ShowBarChart />
-      <LineChart width="600" height="480" />
+      <ShowBarChart viewingHistory={this.state.viewingHistory} />
+      <LineChart viewingHistory={this.state.viewingHistory} width="600" height="480" />
       </div>
     )
   }
