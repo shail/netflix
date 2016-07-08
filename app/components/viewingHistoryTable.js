@@ -25,7 +25,7 @@ var ViewingHistoryTable = React.createClass({
 
   render: function() {
     return(
-      <div>
+      <div className={"bs-table"}>
         <BootstrapTable columnFilter={true} data={this.state.data} pagination={true} striped={true} hover={true}>
             <TableHeaderColumn isKey={true} width="100" dataSort={true} dataField="date">Date</TableHeaderColumn>
             <TableHeaderColumn width="100" dataSort={true} dataField="name">Name</TableHeaderColumn>

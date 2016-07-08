@@ -61,7 +61,7 @@ var ShowBarChart = React.createClass({
         ]
     };
     return (
-      <BarChart data={barData} width="600" height="480" redraw />
+      <BarChart className={"barchart"} data={barData} width="600" height="480" redraw />
     )
   }
 });
