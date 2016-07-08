@@ -19,6 +19,7 @@ var ShowBarChart = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
+    // Could maintain a heap here in the future to get the top 5
     const resultObject = _.zipObject(this.state.data, this.state.labels);
     const resultArray = []
     _.forEach(nextProps.viewingHistory.viewing_history, function(object) {
