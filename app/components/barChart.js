@@ -5,6 +5,7 @@ var BarChart = require('react-chartjs').Bar;
 var React = require('react');
 
 var moment = require('moment');
+var MaxHeap = require('../helpers/heap.js');
 
 var ShowBarChart = React.createClass({
   getInitialState: function() {
@@ -19,9 +20,8 @@ var ShowBarChart = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    // Could maintain a heap here in the future to get the top 5
     const resultObject = _.zipObject(this.state.data, this.state.labels);
-    const resultArray = []
+    const heap = MaxHeap();
     _.forEach(nextProps.viewingHistory.viewing_history, function(object) {
       const name = object.name;
       if (name.includes("Season")) {
@@ -35,14 +35,11 @@ var ShowBarChart = React.createClass({
     const returnLabels = [];
 
     _.forEach(resultObject, function(value, key) {
-      resultArray.push([value, key]);
+      heap.push([value, key]);
     });
 
-    const sortedArray = resultArray.sort(function(a, b) {
-      return a[0] - b[0]
-    });
-
-    _.forEach(sortedArray.reverse().slice(0,5), function(pair) {
+    _.times(5, function() {
+      const pair = heap.pop();
       returnData.push(pair[0]);
       returnLabels.push(pair[1]);
     });
