@@ -2,6 +2,10 @@ var Heap = function() {
   const arr = [];
   const that = {};
 
+  const comp = function(a, b) {
+    return a[0] > b[0]
+  };
+
   const parent = function(n) {
     return (n === 0 ? -1 : Math.floor((n-1) / 2));
   };
@@ -25,7 +29,7 @@ var Heap = function() {
     const parentValue = parent(p);
     if (parentValue === -1) {
       return;
-    } else if (arr[parentValue][0] < arr[p][0]) {
+    } else if (comp(arr[p], arr[parentValue])) {
       swap(p, parentValue);
       bubbleUp(parentValue);
       return;
@@ -38,7 +42,7 @@ var Heap = function() {
 
     [0,1].forEach(function(i) {
       if ((c + i) < arr.length) {
-        if (arr[index][0] < arr[c + i][0]) {
+        if (comp(arr[c+i], arr[index])) {
           index = c + i;
         }
       }
